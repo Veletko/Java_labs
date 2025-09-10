@@ -1,4 +1,4 @@
-import java.util.Scanner;
+
 
 public class task10 {
     /*Написать программу расчета идеального
