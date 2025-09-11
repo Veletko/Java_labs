@@ -2,6 +2,11 @@ import java.util.Scanner;
 public class Task5 {
     public static void main(String[] args)
     {
+        /*Организовать ввод с клавиатуры
+         даты рождения человека. Программа
+          должна вывести знак зодиака и название
+           года по китайскому календарю.
+         */
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите день рождения (1-31): ");
         int day = scanner.nextInt();
