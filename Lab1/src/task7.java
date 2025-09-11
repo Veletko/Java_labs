@@ -12,7 +12,7 @@ public class task7 {
 
         System.out.print("Введите годовой процент: ");
         float p = scanner.nextFloat();
-        if (p <= 0){
+        if (p <= 0 || p > 100){
             System.out.print("Введите годовой процент");
             return;
         }
