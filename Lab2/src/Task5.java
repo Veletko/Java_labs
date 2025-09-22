@@ -16,7 +16,10 @@ public class Task5 {
 
         System.out.print("Введите год рождения (например, 1990): ");
         int year = scanner.nextInt();
-
+        if (year < 1900){
+            System.out.println("ты не такой старый");
+            return;
+        }
         // Определение знака зодиака
         String zodiacSign = getZodiacSign(day, month);
         System.out.println("Знак зодиака: " + zodiacSign);
