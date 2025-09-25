@@ -17,6 +17,7 @@ public class Task8 {
         }
         int newNum = 0;
 
+
         for (int i = len; i >= 1; i--){
             newNum += num % 10;
             num = num / 10;
