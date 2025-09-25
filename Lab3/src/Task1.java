@@ -1,4 +1,4 @@
-public class Lab1 {
+public class Task1 {
     public static void main(String[] args) {
         /*
         * Числа Фибоначчи – это последовательность
