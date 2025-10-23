@@ -1,0 +1,2 @@
+Имя: John, Фамилия: Doe, Прозвище: Johnny, Год рождения: 1990, Телефоны: [home: +12345678902, mobile: +12345678901], Email: [john.doe@example.com] (saved at 2025-10-23T22:40:16.979761)
+Имя: Jane, Фамилия: Smith, Прозвище: Janey, Год рождения: 1995, Телефоны: [work: +98765432101], Email: [jane.smith@example.com] (saved at 2025-10-23T22:40:16.981760500)
