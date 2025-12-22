@@ -5,46 +5,69 @@
          http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
-    <display-name>User Management System</display-name>
+    <display-name>Coffee Management System</display-name>
 
+    <!-- Сервлеты для управления кофе -->
     <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.example.servlets.UserServlet</servlet-class>
+        <servlet-name>CoffeeServlet</servlet-name>
+        <servlet-class>com.example.servlets.CoffeeServlet</servlet-class>
     </servlet>
 
     <servlet>
-        <servlet-name>AddUserServlet</servlet-name>
-        <servlet-class>com.example.servlets.AddUserServlet</servlet-class>
+        <servlet-name>AddCoffeeServlet</servlet-name>
+        <servlet-class>com.example.servlets.AddCoffeeServlet</servlet-class>
     </servlet>
 
     <servlet>
-        <servlet-name>EditUserServlet</servlet-name>
-        <servlet-class>com.example.servlets.EditUserServlet</servlet-class>
+        <servlet-name>EditCoffeeServlet</servlet-name>
+        <servlet-class>com.example.servlets.EditCoffeeServlet</servlet-class>
     </servlet>
 
     <servlet>
-        <servlet-name>DeleteUserServlet</servlet-name>
-        <servlet-class>com.example.servlets.DeleteUserServlet</servlet-class>
+        <servlet-name>DeleteCoffeeServlet</servlet-name>
+        <servlet-class>com.example.servlets.DeleteCoffeeServlet</servlet-class>
     </servlet>
 
+    <!-- Сервлеты для упаковки фургона и поиска -->
+    <servlet>
+        <servlet-name>PackVanServlet</servlet-name>
+        <servlet-class>com.example.servlets.PackVanServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>FindCoffeeServlet</servlet-name>
+        <servlet-class>com.example.servlets.FindCoffeeServlet</servlet-class>
+    </servlet>
+
+    <!-- Маппинг сервлетов -->
     <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/users</url-pattern>
+        <servlet-name>CoffeeServlet</servlet-name>
+        <url-pattern>/coffees</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>AddUserServlet</servlet-name>
-        <url-pattern>/add-user</url-pattern>
+        <servlet-name>AddCoffeeServlet</servlet-name>
+        <url-pattern>/add-coffee</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>EditUserServlet</servlet-name>
-        <url-pattern>/edit-user</url-pattern>
+        <servlet-name>EditCoffeeServlet</servlet-name>
+        <url-pattern>/edit-coffee</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>DeleteUserServlet</servlet-name>
-        <url-pattern>/delete-user</url-pattern>
+        <servlet-name>DeleteCoffeeServlet</servlet-name>
+        <url-pattern>/delete-coffee</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>PackVanServlet</servlet-name>
+        <url-pattern>/pack-van</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>FindCoffeeServlet</servlet-name>
+        <url-pattern>/find-coffee</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

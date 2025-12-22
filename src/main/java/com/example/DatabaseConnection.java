@@ -5,7 +5,7 @@ import java.io.File;
 
 public class DatabaseConnection {
     private static final String DB_DIRECTORY = "./database/";
-    private static final String DB_FILE = "example.accdb";
+    private static final String DB_FILE = "coffee.accdb";
     private static final String DB_PATH = DB_DIRECTORY + DB_FILE;
     private static final String ACCESS_URL = "jdbc:ucanaccess://" + DB_PATH;
 
@@ -14,7 +14,6 @@ public class DatabaseConnection {
     private static final String PASSWORD = "";
 
     static {
-        // Явная загрузка драйвера
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
         } catch (ClassNotFoundException e) {
@@ -53,24 +52,54 @@ public class DatabaseConnection {
     }
 
     public static void createTable() throws SQLException {
-        String sql = "CREATE TABLE users (id AUTOINCREMENT PRIMARY KEY, name VARCHAR(100) NOT NULL, email VARCHAR(100) NOT NULL)";
+        String sql = "CREATE TABLE coffee (" +
+                "id AUTOINCREMENT PRIMARY KEY, " +
+                "name VARCHAR(100) NOT NULL, " +
+                "type VARCHAR(50) NOT NULL, " +
+                "weight DOUBLE NOT NULL, " +
+                "volume DOUBLE NOT NULL, " +
+                "price DOUBLE NOT NULL, " +
+                "package_weight DOUBLE, " +
+                "package_type VARCHAR(50), " +
+                "quantity INTEGER DEFAULT 0)";
 
         try (Connection conn = getConnection(); Statement statement = conn.createStatement()) {
             try {
-                statement.execute("DROP TABLE users");
+                statement.execute("DROP TABLE coffee");
             } catch (SQLException e) {
                 // Table doesn't exist, ignore
             }
             statement.execute(sql);
             System.out.println("Table created successfully");
+
+            // Вставляем тестовые данные
+            insertSampleData(conn);
         }
     }
 
-    public static void createTestTable() throws SQLException {
-        String sql = "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100) NOT NULL, email VARCHAR(100) NOT NULL)";
+    private static void insertSampleData(Connection conn) throws SQLException {
+        String[] sqls = {
+                "INSERT INTO coffee (name, type, weight, volume, price, package_weight, package_type, quantity) " +
+                        "VALUES ('Arabica Premium', 'BEAN', 1.0, 0.002, 25.50, 0.05, 'Бумажный пакет', 100)",
 
-        try (Connection conn = getTestConnection(); Statement statement = conn.createStatement()) {
-            statement.execute(sql);
+                "INSERT INTO coffee (name, type, weight, volume, price, package_weight, package_type, quantity) " +
+                        "VALUES ('Robusta Gold', 'GROUND', 0.5, 0.0015, 18.75, 0.03, 'Фольгированный пакет', 150)",
+
+                "INSERT INTO coffee (name, type, weight, volume, price, package_weight, package_type, quantity) " +
+                        "VALUES ('Nescafe Classic', 'INSTANT_JAR', 0.2, 0.0008, 12.30, 0.15, 'Стеклянная банка', 80)",
+
+                "INSERT INTO coffee (name, type, weight, volume, price, package_weight, package_type, quantity) " +
+                        "VALUES ('Jacobs Monarch', 'INSTANT_SACHET', 0.025, 0.0001, 1.20, 0.005, 'Пакетик', 500)",
+
+                "INSERT INTO coffee (name, type, weight, volume, price, package_weight, package_type, quantity) " +
+                        "VALUES ('Colombian Supremo', 'BEAN', 2.0, 0.004, 45.00, 0.08, 'Вакуумная упаковка', 60)"
+        };
+
+        try (Statement statement = conn.createStatement()) {
+            for (String sql : sqls) {
+                statement.execute(sql);
+            }
+            System.out.println("Sample data inserted");
         }
     }
 
