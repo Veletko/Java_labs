@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Coffee Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            color: white;
+        }
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin: 40px 0;
+        }
+        .menu a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            text-decoration: none;
+            border-radius: 15px;
+            width: 220px;
+            height: 180px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .menu a:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .menu a i {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            color: white;
+            opacity: 0.8;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>☕ Coffee Management System</h1>
+        <p>Spring Boot + Thymeleaf + JPA</p>
+    </div>
+
+    <div class="menu">
+        <a href="/coffees">
+            <i class="fas fa-list"></i>
+            <span>View All Coffee</span>
+            <small>Browse all coffee products</small>
+        </a>
+        <a href="/coffees/add">
+            <i class="fas fa-plus-circle"></i>
+            <span>Add New Coffee</span>
+            <small>Add new coffee products</small>
+        </a>
+        <a href="/coffees/pack-van">
+            <i class="fas fa-truck-loading"></i>
+            <span>Pack Van</span>
+            <small>Optimize van loading</small>
+        </a>
+
+        <!-- Изменить с /spring/find-coffee на: -->
+        <a href="/coffees/find">
+            <i class="fas fa-search"></i>
+            <span>Find Coffee</span>
+            <small>Search coffee by parameters</small>
+        </a>
+    </div>
+
+    <div class="footer">
+        <p>© 2024 Coffee Management System | Spring Boot + Thymeleaf</p>
+    </div>
+</div>
+</body>
+</html>

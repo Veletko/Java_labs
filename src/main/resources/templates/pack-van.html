@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pack Van - Optimize Loading</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            flex: 1;
+            min-width: 200px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-card h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.1em;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #764ba2;
+            margin: 10px 0;
+        }
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            flex: 1;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .results-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .utilization-bar {
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .utilization-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        .loading-indicator {
+            background: #ffc107;
+            color: #212529;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .optimization-tip {
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .navigation {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) {
+            .form-row, .stats-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-truck-loading"></i> Pack Van Optimizer</h1>
+        <p>Optimize van loading for maximum efficiency</p>
+    </div>
+
+    <!-- Статистика -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <h3><i class="fas fa-box"></i> Total Items</h3>
+            <div class="stat-value" th:text="${itemCount ?: 0}">0</div>
+            <p>Coffee products in system</p>
+        </div>
+        <div class="stat-card">
+            <h3><i class="fas fa-weight-hanging"></i> Total Weight</h3>
+            <div class="stat-value" th:text="${totalWeight ?: '0.0'} + ' kg'">0.0 kg</div>
+            <p>Total available weight</p>
+        </div>
+        <div class="stat-card">
+            <h3><i class="fas fa-cube"></i> Total Volume</h3>
+            <div class="stat-value" th:text="${totalVolume ?: '0.0'} + ' m³'">0.0 m³</div>
+            <p>Total available volume</p>
+        </div>
+        <div class="stat-card">
+            <h3><i class="fas fa-dollar-sign"></i> Total Value</h3>
+            <div class="stat-value" th:text="'$' + ${totalValue ?: '0.0'}">$0.0</div>
+            <p>Total inventory value</p>
+        </div>
+    </div>
+
+    <!-- Форма оптимизации -->
+    <div class="form-section">
+        <h2><i class="fas fa-cogs"></i> Van Loading Parameters</h2>
+        <p>Set the maximum capacity of your van for optimal loading</p>
+
+        <form th:action="@{/coffees/pack-van/optimize}" method="post">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="maxWeight"><i class="fas fa-weight"></i> Maximum Weight (kg)</label>
+                    <input type="number" id="maxWeight" name="maxWeight"
+                           th:value="${maxWeight}" step="0.1" min="1"
+                           placeholder="e.g., 1000 kg">
+                </div>
+                <div class="form-group">
+                    <label for="maxVolume"><i class="fas fa-arrows-alt-v"></i> Maximum Volume (m³)</label>
+                    <input type="number" id="maxVolume" name="maxVolume"
+                           th:value="${maxVolume}" step="0.001" min="0.1"
+                           placeholder="e.g., 12.5 m³">
+                </div>
+            </div>
+
+            <div class="optimization-tip">
+                <i class="fas fa-lightbulb"></i> <strong>Tip:</strong>
+                For best results, fill both parameters. The algorithm will prioritize items with highest weight/volume ratio.
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-magic"></i> Optimize Loading
+            </button>
+        </form>
+    </div>
+
+    <!-- Результаты оптимизации -->
+    <div class="results-section" th:if="${optimizedCoffees}">
+        <div class="results-header">
+            <h2><i class="fas fa-chart-line"></i> Optimization Results</h2>
+            <div style="color: #28a745; font-weight: bold;">
+                <i class="fas fa-check-circle"></i> Optimization Complete
+            </div>
+        </div>
+
+        <!-- Показатели использования -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Weight Used</h3>
+                <div class="stat-value" th:text="${loadedWeight} + ' kg'">0 kg</div>
+                <div class="utilization-bar">
+                    <div class="utilization-fill"
+                         th:style="'width: ' + ${utilizationWeight} + '%;'"></div>
+                </div>
+                <p th:text="${utilizationWeight} + '% of capacity'">0%</p>
+            </div>
+            <div class="stat-card">
+                <h3>Volume Used</h3>
+                <div class="stat-value" th:text="${loadedVolume} + ' m³'">0 m³</div>
+                <div class="utilization-bar">
+                    <div class="utilization-fill"
+                         th:style="'width: ' + ${utilizationVolume} + '%;'"></div>
+                </div>
+                <p th:text="${utilizationVolume} + '% of capacity'">0%</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Value</h3>
+                <div class="stat-value" th:text="'$' + ${loadedValue}">$0</div>
+                <p>Loaded items value</p>
+            </div>
+            <div class="stat-card">
+                <h3>Items Loaded</h3>
+                <div class="stat-value" th:text="${optimizedCoffees.size()}">0</div>
+                <p>Optimal selection</p>
+            </div>
+        </div>
+
+        <!-- Оптимизированный список -->
+        <h3><i class="fas fa-list-ol"></i> Recommended Loading Order</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Priority</th>
+                <th>Coffee Name</th>
+                <th>Type</th>
+                <th>Weight (kg)</th>
+                <th>Volume (m³)</th>
+                <th>Density</th>
+                <th>Value</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="coffee, iterStat : ${optimizedCoffees}">
+                <td th:text="${iterStat.index + 1}">1</td>
+                <td>
+                    <strong th:text="${coffee.name}"></strong><br>
+                    <small th:if="${coffee.packageType}"
+                           th:text="${coffee.packageType}"
+                           style="color: #6c757d;"></small>
+                </td>
+                <td th:text="${coffee.type?.description}">-</td>
+                <td th:text="${#numbers.formatDecimal(coffee.totalWeight, 1, 3)} + ' kg'">0.0 kg</td>
+                <td th:text="${coffee.volume != null ? #numbers.formatDecimal(coffee.volume, 1, 4) + ' m³' : '-'}">-</td>
+                <td>
+                    <span th:if="${coffee.volume != null && coffee.volume > 0}"
+                          th:text="${#numbers.formatDecimal(coffee.totalWeight / coffee.volume, 1, 1)} + ' kg/m³'">
+                    </span>
+                    <span th:if="${coffee.volume == null || coffee.volume == 0}">-</span>
+                </td>
+                <td><strong th:text="'$' + ${#numbers.formatDecimal(coffee.price, 1, 2)}"></strong></td>
+                <td th:text="${coffee.quantity} + ' units'">0 units</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="optimization-tip" th:if="${optimizedCoffees.size() > 0}">
+            <i class="fas fa-sort-amount-down"></i> <strong>Loading Strategy:</strong>
+            Items are sorted by density (weight/volume). Load from top to bottom for maximum efficiency.
+        </div>
+    </div>
+
+    <!-- Навигация -->
+    <div class="navigation">
+        <a href="/coffees/find" class="btn btn-primary">
+            <i class="fas fa-search"></i> Find Coffee
+        </a>
+        <a href="/coffees" class="btn btn-secondary">
+            <i class="fas fa-coffee"></i> All Coffee Products
+        </a>
+        <a href="/" class="btn btn-secondary">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
+    </div>
+</div>
+</body>
+</html>
